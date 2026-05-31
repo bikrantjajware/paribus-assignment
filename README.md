@@ -140,7 +140,7 @@ The API will be available at `http://127.0.0.1:5000`.
 ### 5. (Optional) Run with Gunicorn
 
 ```bash
-gunicorn app:app -b 0.0.0.0:8080 -w 2
+gunicorn app:app -b 0.0.0.0:8080 -w 1 --threads 4 --worker-class gthread --reload
 ```
 
 ---
@@ -260,15 +260,6 @@ Liveness check — returns `{"status": "ok"}` with `200 OK`.
   - `HospitalAPIClient` with `responses` or `httpretty` for HTTP mocking
 
 - **Dockerize the application** — Add a `Dockerfile` and `docker-compose.yml` so the service (and a mock upstream) can be spun up with a single command:
-
-  ```dockerfile
-  FROM python:3.11-slim
-  WORKDIR /app
-  COPY requirements.txt .
-  RUN pip install --no-cache-dir -r requirements.txt
-  COPY . .
-  CMD ["gunicorn", "app:app", "-b", "0.0.0.0:8080", "-w", "2"]
-  ```
 
 - **Persistent database** — Replace the in-memory `HOSPITALS` dict with SQLAlchemy + PostgreSQL/SQLite so data survives process restarts.
 
