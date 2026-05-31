@@ -35,6 +35,7 @@ def process_bulk_upload(uploaded_file: FileStorage) -> Tuple[BulkUploadResponse,
         len(valid_rows),
         len(row_errors),
     )
+    logger.error(f'failed rows:{row_errors}')
 
     batch_id = str(uuid.uuid4())
     initial_status = HospitalStatus.CREATED.value
